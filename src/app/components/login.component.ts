@@ -9,60 +9,78 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="min-h-screen flex items-center justify-center bg-gray-50">
-      <div class="max-w-md w-full space-y-8">
-        <div>
-          <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            {{isLogin ? 'Sign in to chat' : 'Create account'}}
-          </h2>
+    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center p-4">
+      <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+          <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl mb-6 shadow-2xl">
+            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path>
+              <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"></path>
+            </svg>
+          </div>
+          <h1 class="text-4xl font-bold text-white mb-3 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Connectly</h1>
+          <p class="text-gray-400 text-sm">{{isLogin ? 'Welcome back to the conversation' : 'Join the conversation'}}</p>
         </div>
-        <form class="mt-8 space-y-6" (ngSubmit)="onSubmit()">
-          <div class="rounded-md shadow-sm -space-y-px">
-            <div>
-              <input
-                [(ngModel)]="username"
-                name="username"
-                type="text"
-                required
-                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Username"
-              />
-            </div>
-            <div>
-              <input
-                [(ngModel)]="password"
-                name="password"
-                type="password"
-                required
-                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
-          </div>
 
-          <div *ngIf="error" class="text-red-600 text-sm text-center">
-            {{error}}
-          </div>
+        <!-- Login Form -->
+        <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm rounded-3xl p-8 border border-gray-700/50 shadow-2xl">
+          <form class="space-y-6" (ngSubmit)="onSubmit()">
+            <div class="space-y-4">
+              <div>
+                <input
+                  [(ngModel)]="username"
+                  name="username"
+                  type="text"
+                  required
+                  class="w-full px-4 py-4 bg-gray-700/50 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all"
+                  placeholder="Username"
+                />
+              </div>
+              
+              <div>
+                <input
+                  [(ngModel)]="password"
+                  name="password"
+                  type="password"
+                  required
+                  class="w-full px-4 py-4 bg-gray-700/50 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
 
-          <div>
+            <div *ngIf="error" class="bg-red-900/50 border border-red-500/50 text-red-400 text-sm p-4 rounded-2xl text-center backdrop-blur-sm">
+              {{error}}
+            </div>
+
             <button
               type="submit"
-              class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              [disabled]="!username || !password"
+              class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-200 transform hover:scale-105 shadow-lg"
             >
-              {{isLogin ? 'Sign in' : 'Sign up'}}
+              {{isLogin ? 'Sign In' : 'Create Account'}}
             </button>
-          </div>
-
-          <div class="text-center">
+          </form>
+          
+          <div class="mt-6 text-center">
+            <span class="text-gray-400 text-sm">
+              {{isLogin ? "New to Connectly?" : "Already have an account?"}}
+            </span>
             <button
               type="button"
               (click)="toggleMode()"
-              class="text-indigo-600 hover:text-indigo-500"
+              class="ml-2 text-purple-400 hover:text-purple-300 font-semibold text-sm transition-colors"
             >
-              {{isLogin ? 'Need an account? Sign up' : 'Already have an account? Sign in'}}
+              {{isLogin ? 'Create account' : 'Sign in'}}
             </button>
           </div>
-        </form>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center mt-8">
+          <p class="text-gray-500 text-xs">Real-time messaging • Secure • Fast</p>
+        </div>
       </div>
     </div>
   `
@@ -79,16 +97,18 @@ export class LoginComponent {
   ) {}
 
   onSubmit(): void {
+    if (!this.username.trim() || !this.password.trim()) return;
+    
     this.error = '';
     
     const authObservable = this.isLogin 
-      ? this.authService.login(this.username, this.password)
-      : this.authService.register(this.username, this.password);
+      ? this.authService.login(this.username.trim(), this.password)
+      : this.authService.register(this.username.trim(), this.password);
 
     authObservable.subscribe({
       next: (response) => {
         this.authService.setCurrentUser({
-          username: response.username,
+          username: response.user.username,
           token: response.token
         });
         this.router.navigate(['/chat']);

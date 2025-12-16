@@ -1,0 +1,28 @@
+{
+  "name": "connectly-chat",
+  "version": "1.0.0",
+  "description": "Real-time chat platform deployment configuration",
+  "deployment": {
+    "frontend": {
+      "platform": "vercel",
+      "buildCommand": "ng build --configuration=production",
+      "outputDirectory": "dist/chat-frontend",
+      "environmentVariables": {
+        "NODE_ENV": "production"
+      }
+    },
+    "backend": {
+      "platform": "railway",
+      "buildCommand": "npm install",
+      "startCommand": "npm start",
+      "environmentVariables": {
+        "NODE_ENV": "production",
+        "PORT": "8080"
+      }
+    }
+  },
+  "domains": {
+    "frontend": "your-app-name.vercel.app",
+    "backend": "your-app-name.railway.app"
+  }
+}

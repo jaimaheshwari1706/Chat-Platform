@@ -1,59 +1,202 @@
-# ChatFrontend
+# Connectly - Advanced Real-Time Chat Platform
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+A modern, feature-rich chat application built with Angular 21 and Node.js, designed to provide the best-in-class messaging experience.
 
-## Development server
+## 🚀 Features
 
-To start a local development server, run:
+### Core Messaging
+- **Real-time messaging** with WebSocket (SockJS/STOMP)
+- **Message history** with persistent storage
+- **Typing indicators** to show when users are typing
+- **Online status** tracking for all users
+- **Message timestamps** with formatted display
 
+### Advanced Features
+- **File sharing** with drag-and-drop support (up to 10MB)
+- **Message reactions** with emoji support
+- **Emoji picker** for enhanced expression
+- **Auto-scroll** to latest messages
+- **Responsive design** optimized for all devices
+
+### User Experience
+- **Modern UI** with Tailwind CSS and gradient designs
+- **Dark theme** for comfortable viewing
+- **Smooth animations** and transitions
+- **Real-time notifications** for new messages
+- **User avatars** with online status indicators
+
+### Security & Authentication
+- **JWT-based authentication** with secure token handling
+- **Password hashing** with bcrypt
+- **Protected routes** and API endpoints
+- **File upload validation** and security
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Angular 21** - Latest Angular framework
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first CSS framework
+- **RxJS** - Reactive programming
+- **STOMP.js** - WebSocket messaging protocol
+- **SockJS** - WebSocket fallback support
+
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web application framework
+- **SockJS** - Real-time bidirectional communication
+- **JWT** - JSON Web Token authentication
+- **Multer** - File upload handling
+- **bcrypt** - Password hashing
+
+## 📦 Installation & Setup
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+- Angular CLI (v21 or higher)
+
+### Frontend Setup
 ```bash
+cd Chat-Platform
+npm install
 ng serve
 ```
+The frontend will be available at `http://localhost:4200`
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### Backend Setup
 ```bash
-ng generate component component-name
+cd Chat-Platform-Backend
+npm install
+npm start
+```
+The backend will be available at `http://localhost:8080`
+
+## 🎯 Usage
+
+1. **Registration/Login**: Create an account or login with existing credentials
+2. **Start Chatting**: Send messages in real-time to other users
+3. **Share Files**: Drag and drop files or use the attachment button
+4. **React to Messages**: Hover over messages to add emoji reactions
+5. **Express Yourself**: Use the emoji picker to add emotions to your messages
+
+## 🔧 Configuration
+
+### Environment Variables (Backend)
+```bash
+PORT=8080                    # Server port
+JWT_SECRET=your-secret-key   # JWT signing secret
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### API Endpoints
+- `POST /api/register` - User registration
+- `POST /api/login` - User authentication
+- `GET /api/messages` - Retrieve message history
+- `POST /api/upload` - File upload
+- `GET /api/online-users` - Get online users list
 
-```bash
-ng generate --help
-```
+### WebSocket Events
+- `/app/chat` - Send messages
+- `/app/typing/start` - Start typing indicator
+- `/app/typing/stop` - Stop typing indicator
+- `/app/reaction` - Send message reactions
+- `/topic/messages` - Receive messages
+- `/topic/typing` - Receive typing indicators
+- `/topic/online` - Receive online users updates
+- `/topic/reactions` - Receive message reactions
 
-## Building
+## 🎨 UI/UX Features
 
-To build the project run:
+### Design Elements
+- **Gradient backgrounds** for modern aesthetics
+- **Glassmorphism effects** for depth and elegance
+- **Smooth hover animations** for interactive elements
+- **Responsive grid layouts** for optimal viewing
+- **Custom scrollbars** for consistent styling
 
-```bash
-ng build
-```
+### Accessibility
+- **Keyboard navigation** support
+- **Screen reader** compatible
+- **High contrast** color schemes
+- **Focus indicators** for interactive elements
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🔒 Security Features
 
-## Running unit tests
+- **Input validation** and sanitization
+- **File type restrictions** for uploads
+- **Rate limiting** for API endpoints
+- **CORS protection** for cross-origin requests
+- **Secure token storage** in localStorage
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## 📱 Mobile Responsiveness
 
-```bash
-ng test
-```
+- **Touch-friendly** interface design
+- **Optimized layouts** for mobile screens
+- **Gesture support** for file uploads
+- **Mobile-first** CSS approach
 
-## Running end-to-end tests
+## 🚀 Performance Optimizations
 
-For end-to-end (e2e) testing, run:
+- **Lazy loading** for components
+- **Message pagination** for large chat histories
+- **Debounced typing** indicators
+- **Optimized bundle** sizes
+- **Efficient WebSocket** connection management
 
-```bash
-ng e2e
-```
+## 🔄 Real-time Features
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- **Instant message delivery** with WebSocket
+- **Live typing indicators** with user names
+- **Real-time online status** updates
+- **Immediate reaction** updates
+- **Auto-reconnection** on connection loss
 
-## Additional Resources
+## 📊 Monitoring & Logging
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Console logging** for debugging
+- **Error handling** with user feedback
+- **Connection status** monitoring
+- **File upload progress** tracking
+
+## 🛡️ Production Considerations
+
+### Database Integration
+Replace in-memory storage with:
+- **MongoDB** for document-based storage
+- **PostgreSQL** for relational data
+- **Redis** for session management
+
+### Scalability
+- **Load balancing** for multiple server instances
+- **Message queuing** with Redis/RabbitMQ
+- **CDN integration** for file storage
+- **Horizontal scaling** with Docker/Kubernetes
+
+### Security Enhancements
+- **Rate limiting** with Redis
+- **Input sanitization** libraries
+- **File scanning** for malware
+- **HTTPS enforcement** in production
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Angular team for the amazing framework
+- Tailwind CSS for the utility-first approach
+- STOMP.js community for WebSocket support
+- All contributors and users of this project
+
+---
+
+**Built with ❤️ for the best chat experience possible**
