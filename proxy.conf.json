@@ -1,0 +1,23 @@
+{
+  "/auth": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/users": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/conversations": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/socket.io": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true,
+    "ws": true
+  }
+}
