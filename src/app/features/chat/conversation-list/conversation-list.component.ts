@@ -1,7 +1,7 @@
 import { Component, signal, computed, inject, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AvatarComponent } from '../../../shared/components/avatar/avatar.component';
+import { AvatarComponent } from '../../../shared/avatar/avatar.component';
 import { IconButtonComponent } from '../../../shared/components/icon-button/icon-button.component';
 import { ThemeToggleComponent } from '../../../shared/components/theme-toggle/theme-toggle.component';
 import { SkeletonComponent } from '../../../shared/components/skeleton/skeleton.component';
@@ -60,18 +60,19 @@ function formatTime(dateStr: string): string {
 
       <!-- List -->
       <div class="flex-1 overflow-y-auto">
-        @if (loading()) {
-          @for (i of [1,2,3,4]; track i) {
+        <ng-container *ngIf="loading(); else list">
+          <ng-container *ngFor="let i of [1,2,3,4]">
             <div class="flex items-center gap-3 px-4 py-3">
-              <app-skeleton width="40px" height="40px" [rounded]="true" />
+              <app-skeleton width="40px" height="40px" [rounded]="true"></app-skeleton>
               <div class="flex-1 space-y-2">
-                <app-skeleton width="60%" height="14px" />
-                <app-skeleton width="80%" height="12px" />
+                <app-skeleton width="60%" height="14px"></app-skeleton>
+                <app-skeleton width="80%" height="12px"></app-skeleton>
               </div>
             </div>
-          }
-        } @else {
-          @for (conv of filtered(); track conv.id) {
+          </ng-container>
+        </ng-container>
+        <ng-template #list>
+          <ng-container *ngFor="let conv of filtered(); trackBy: trackByConv">
             <button (click)="select(conv)"
               class="w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-200 ease-in-out
                      hover:bg-zinc-100 dark:hover:bg-zinc-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent
@@ -79,7 +80,7 @@ function formatTime(dateStr: string): string {
               [class]="activeId() === conv.id
                 ? 'bg-violet-50 dark:bg-zinc-800 border-accent'
                 : 'border-transparent'">
-              <app-avatar [name]="otherName(conv)" size="md" [showOnline]="false" />
+              <app-avatar [name]="otherName(conv)" size="md" [showOnline]="false"></app-avatar>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between gap-2">
                   <span class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">{{ otherName(conv) }}</span>
@@ -87,19 +88,15 @@ function formatTime(dateStr: string): string {
                 </div>
                 <div class="flex items-center justify-between gap-2 mt-0.5">
                   <span class="text-xs text-zinc-400 truncate">{{ conv.lastMessage ?? 'Start a conversation' }}</span>
-                  @if (unreadCount(conv) > 0) {
-                    <span class="shrink-0 min-w-[20px] h-5 px-1.5 rounded-full bg-accent text-white text-xs font-semibold flex items-center justify-center animate-badge-pop">
-                      {{ unreadCount(conv) }}
-                    </span>
-                  }
+                  <span *ngIf="unreadCount(conv) > 0" class="shrink-0 min-w-[20px] h-5 px-1.5 rounded-full bg-accent text-white text-xs font-semibold flex items-center justify-center animate-badge-pop">
+                    {{ unreadCount(conv) }}
+                  </span>
                 </div>
               </div>
             </button>
-          }
-          @if (!loading() && filtered().length === 0) {
-            <p class="text-center text-sm text-zinc-400 py-12">No conversations found</p>
-          }
-        }
+          </ng-container>
+          <p *ngIf="!loading() && filtered().length === 0" class="text-center text-sm text-zinc-400 py-12">No conversations found</p>
+        </ng-template>
       </div>
 
       <!-- Current user footer -->
@@ -154,4 +151,6 @@ export class ConversationListComponent {
   unreadCount(_conv: Conversation): number { return 0; }
 
   select(conv: Conversation): void { this.selected.emit(conv); }
+
+  trackByConv(index: number, item: Conversation){ return item.id; }
 }

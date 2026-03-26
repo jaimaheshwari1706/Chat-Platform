@@ -7,6 +7,22 @@ module.exports = {
       colors: {
         accent: '#6C63FF',
       },
+      borderRadius: {
+        '2xl': '1rem',
+      }
+    }
+  },
+  plugins: [],
+}
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./src/**/*.{html,ts}'],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        accent: '#6C63FF',
+      },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },

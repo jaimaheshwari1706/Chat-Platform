@@ -1,30 +1,24 @@
-FROM node:18-alpine as build
+# Stage 1: Build the Angular app
+FROM node:20-alpine AS builder
+WORKDIR /usr/src/app
 
-WORKDIR /app
+# Install build deps
+COPY package.json package-lock.json* ./
+RUN npm ci --silent
 
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci
-
-# Copy source code
+# Copy sources and build
 COPY . .
+RUN npm run build -- --configuration production --silent
 
-# Build the application
-RUN npm run build
-
-# Production stage
+# Stage 2: Serve with nginx
 FROM nginx:alpine
 
-# Copy built application
-COPY --from=build /app/dist/chat-frontend /usr/share/nginx/html
+# Copy nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy built app (project-specific dist folder)
+COPY --from=builder /usr/src/app/dist/chat-frontend /usr/share/nginx/html
 
-# Expose port
 EXPOSE 80
 
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]

@@ -14,17 +14,13 @@ import { MessageInputComponent } from '../message-input/message-input.component'
   template: `
     <div class="flex flex-col h-full">
       <div #scrollContainer class="flex-1 overflow-y-auto p-4 space-y-1">
-        @if (loading()) {
-          <p class="text-center text-gray-500 text-sm py-4">Loading messages…</p>
-        }
-        @for (msg of messages(); track msg.id) {
-          <app-message-bubble [message]="msg" />
-        }
-        @if (typingLabel()) {
-          <p class="text-xs text-gray-400 italic px-2">{{ typingLabel() }}</p>
-        }
+        <p *ngIf="loading()" class="text-center text-gray-500 text-sm py-4">Loading messages…</p>
+        <ng-container *ngFor="let msg of messages(); trackBy: trackById">
+          <app-message-bubble [message]="msg"></app-message-bubble>
+        </ng-container>
+        <p *ngIf="typingLabel()" class="text-xs text-gray-400 italic px-2">{{ typingLabel() }}</p>
       </div>
-      <app-message-input [conversationId]="conversationId()" (sent)="onSend($event)" />
+      <app-message-input [conversationId]="conversationId()" (sent)="onSend($event)"></app-message-input>
     </div>
   `
 })
@@ -98,8 +94,33 @@ export class ChatWindowComponent implements OnDestroy {
   }
 
   async onSend(content: string): Promise<void> {
+    const pendingId = `pending-${Date.now()}`;
+    const pendingMessage = {
+      id: pendingId,
+      conversationId: this.conversationId(),
+      content,
+      status: 'sent',
+      createdAt: new Date().toISOString(),
+      sender: {
+        id: this.auth.user()?.id ?? 'me',
+        username: this.auth.user()?.username ?? 'Me',
+      },
+      pending: true,
+    } as Message & { pending: boolean };
+
+    this.messages.update((prev) => [...prev, pendingMessage]);
+    this.scrollToBottom();
+
     const ack = await this.socket.sendMessage(this.conversationId(), content);
-    this.messages.update((prev) => [...prev, ack.message]);
+    this.messages.update((prev) => {
+      const next = [...prev];
+      const pending = next.find((m) => (m as Message & { pending?: boolean }).pending);
+      if (pending) {
+        (pending as Message & { pending?: boolean }).id = ack.messageId;
+        (pending as Message & { pending?: boolean }).pending = false;
+      }
+      return next;
+    });
     this.scrollToBottom();
   }
 
@@ -115,4 +136,6 @@ export class ChatWindowComponent implements OnDestroy {
     this.offTyping?.();
     this.offStatus?.();
   }
+
+  trackById(index: number, item: any){ return item.id; }
 }

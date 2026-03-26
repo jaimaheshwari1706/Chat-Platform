@@ -45,6 +45,15 @@
 /* Touch tap delay elimination */
 button, a, [role="button"] { touch-action: manipulation; }
 
+/* Prevent bounce and isolate scroll */
+html, body, app-root { overscroll-behavior: none; }
+
+/* Scroll containers */
+.scroll-smooth { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+
+/* Minimum touch target */
+.touch-target { min-width: 44px; min-height: 44px; }
+
 /* Slide-in animation for mobile chat panel */
 @media (prefers-reduced-motion: no-preference) {
   .slide-in { animation: slide-in 250ms ease-out forwards; }
@@ -70,3 +79,32 @@ button, a, [role="button"] { touch-action: manipulation; }
 @media (prefers-reduced-motion: reduce) {
   .slide-in, .slide-out, .animate-msg-in { animation: none !important; }
 }
+
+/* App animations */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes message-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes badge-pop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+  @keyframes typing-bounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40%           { transform: translateY(-6px); }
+  }
+  @keyframes skeleton-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.4; }
+  }
+}
+
+.message-bubble { animation: message-in 150ms ease-out both; }
+.typing-dot { animation: typing-bounce 1.2s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+.safe-bottom { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+
